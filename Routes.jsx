@@ -3,7 +3,7 @@ import App from "./src/App.jsx";
 import Navbar from "./components/navbar.jsx";
 import Footer from "./components/footer.jsx";
 import Tours from "./components/Tours.jsx";
-
+import Login from "./src/pages/Login.jsx";
 
 const Rutas = () => {
     return(
@@ -13,6 +13,7 @@ const Rutas = () => {
                 <Route path="/" element={<App/>} />
                 <Route path="/tours" element={<Tours/>} />
                 <Route path="/tours/:idtour" element={<Tours/>} />
+                <Route path="/login" element={<Login/>}/>
             </Routes>
             <Footer/>
         </BrowserRouter>

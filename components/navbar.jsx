@@ -1,11 +1,46 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import $ from "jquery";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const localUser = localStorage.getItem('user');
+    if (localUser) {
+      setUser(JSON.parse(localUser));
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Obtener el token de localStorage
+    const token = localStorage.getItem('token');
+
+    // Realizar la solicitud de logout usando jQuery
+    $.ajax({
+      url: `${import.meta.env.VITE_API_URL}/logout`,
+      type: "POST",
+      contentType: "application/json",
+      headers: {
+        Authorization: `Bearer ${token}`, // Enviar el token en los headers
+      },
+      success: function (response) {
+        // Si la respuesta es exitosa, limpiar el localStorage y redirigir al login
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        setUser(null); // Si usas un estado de usuario, como en React
+        window.location.href = '/';
+      },
+      error: function (xhr, status, error) {
+        // Manejo de errores, por ejemplo, si el token es inválido
+        console.error("Error al cerrar sesión:", error);
+      }
+    });
   };
 
   return (
@@ -13,29 +48,63 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
+            <NavLink to="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-red-700">Tarija Tours</span>
-            </Link>
+            </NavLink>
           </div>
 
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            <NavLink to="/" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Inicio
-            </Link>
-            <Link to="/tours" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            </NavLink>
+            <NavLink to="/tours" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Tours
-            </Link>
-            <Link to="/about" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            </NavLink>
+            <NavLink to="/about" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Nosotros
-            </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            </NavLink>
+            <NavLink to="/contact" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Contacto
-            </Link>
+            </NavLink>
             <button className="bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-800 transition-colors duration-200">
               Reservar Ahora
             </button>
           </div>
+
+          {user ? (
+            <div className="relative">
+              <button className="flex items-center space-x-2 bg-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300">
+                <img
+                  src={user.avatar}
+                  alt={user.name}
+                  className="w-8 h-8 rounded-full"
+                />
+                <span>{user.name}</span>
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{user.display}</div>
+                <NavLink to="/perfil" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Ver Perfil
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <NavLink to="/login" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Iniciar sesión
+              </NavLink>
+              <NavLink to="/register" className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                Registrarse
+              </NavLink>
+            </>
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -70,18 +139,18 @@ const Navbar = () => {
       {/* Mobile menu */}
       <div className={`${isOpen ? 'block' : 'hidden'} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link to="/" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
+          <NavLink to="/" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
             Inicio
-          </Link>
-          <Link to="/tours" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
+          </NavLink>
+          <NavLink to="/tours" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
             Tours
-          </Link>
-          <Link to="/about" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
+          </NavLink>
+          <NavLink to="/about" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
             Nosotros
-          </Link>
-          <Link to="/contact" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
+          </NavLink>
+          <NavLink to="/contact" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">
             Contacto
-          </Link>
+          </NavLink>
           <button className="w-full bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-800 transition-colors duration-200 mt-2">
             Reservar Ahora
           </button>
