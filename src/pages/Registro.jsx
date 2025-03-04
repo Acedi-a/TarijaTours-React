@@ -54,7 +54,11 @@ const Registro = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+        <div
+        className="w-full text-white min-h-screen flex flex-col justify-center items-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/bg-login.png')" }}
+    >
+            <div className="flex flex-col mx-auto bg-black/30 backdrop-blur-lg p-10 rounded-2xl shadow-xl w-full max-w-md">
             <h2 className="text-2xl font-bold text-center mb-4">Crear Usuario</h2>
             {status === 201 && (
                 <div className="text-green-600 mb-4">{message}</div>
@@ -73,7 +77,7 @@ const Registro = () => {
             {status === 0 && status !== null && (
                 <div className="text-red-600 mb-4">{message}</div>
             )}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="text-white">
                 <div className="mb-4">
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">Usuario</label>
                     <input
@@ -88,7 +92,7 @@ const Registro = () => {
                     />
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-4 text-white">
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
                     <input
                         type="email"
@@ -165,6 +169,8 @@ const Registro = () => {
                     Crear Usuario
                 </button>
             </form>
+            </div>
+            
         </div>
     );
 };

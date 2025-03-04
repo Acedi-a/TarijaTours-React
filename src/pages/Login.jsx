@@ -51,9 +51,12 @@ const Login = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-200">
-            <div className="bg-white p-8 rounded-lg shadow-md w-96">
-                <h2 className="text-2xl font-bold text-center mb-6">Iniciar sesión</h2>
+        <div
+            className="w-full min-h-screen flex justify-center items-center bg-cover bg-center"
+            style={{ backgroundImage: "url('/bg-login.png')" }}
+        >
+            <div className="flex flex-col mx-auto bg-black/30 backdrop-blur-lg p-10 rounded-2xl shadow-xl w-full max-w-md">
+                <h2 className="text-3xl font-semibold text-white text-center mb-6">Iniciar Sesión</h2>
 
                 {message && (
                     <div className={`p-3 mb-4 rounded ${status === 201 ? 'bg-green-500' : 'bg-red-500'} text-white`}>
@@ -62,38 +65,38 @@ const Login = () => {
                 )}
 
                 <form onSubmit={handleLogin}>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-600" htmlFor="email">Email</label>
+                    <div className="mb-4 ">
+                        <label className="text-white text-lg mb-2" htmlFor="email">Email</label>
                         <input
                             type="email"
                             id="email"
-                            className="w-full p-3 border border-gray-300 rounded-lg mt-1"
+                            className="mb-4 p-3 w-full border border-white/50 rounded-lg bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-white/50"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            placeholder="tu_correo@tarija.com"
                             required
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-600" htmlFor="password">Contraseña</label>
+                        <label className="text-white text-lg mb-2" htmlFor="password">Contraseña</label>
                         <input
                             type="password"
                             id="password"
-                            className="w-full p-3 border border-gray-300 rounded-lg mt-1"
+                            className="mb-6 p-3 w-full border border-white/50 rounded-lg bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-white/50"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Ingresa aquí tu contraseña"
                             required
                         />
                     </div>
 
-                    <div className="flex justify-between items-center">
-                        <button
-                            type="submit"
-                            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-                        >
-                            Iniciar sesión
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        className=" w-full bg-red-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-red-700 transition-all"
+                    >
+                        Iniciar sesión
+                    </button>
                 </form>
             </div>
         </div>

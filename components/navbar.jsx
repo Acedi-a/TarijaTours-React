@@ -54,7 +54,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4 ">
             <NavLink to="/" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Inicio
             </NavLink>
@@ -67,9 +67,6 @@ const Navbar = () => {
             <NavLink to="/contact" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Contacto
             </NavLink>
-            <button className="bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-800 transition-colors duration-200">
-              Reservar Ahora
-            </button>
           </div>
 
           {user ? (
@@ -96,14 +93,14 @@ const Navbar = () => {
               </div>
             </div>
           ) : (
-            <>
-              <NavLink to="/login" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <div className="flex gap-10 text-center">
+              <NavLink to="/login" className="bg-red-600 px-5 my-3 text-center text-white px-4 py-2 rounded-md hover:bg-red-800">
                 Iniciar sesión
               </NavLink>
-              <NavLink to="/register" className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+              <NavLink to="/registro" className="bg-green-600 px-5 my-3 text-center text-white px-4 py-2 rounded-md hover:bg-green-700">
                 Registrarse
               </NavLink>
-            </>
+            </div>
           )}
 
           {/* Mobile menu button */}
