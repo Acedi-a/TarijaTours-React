@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import TourCard from './TourCard.jsx';
 import $ from 'jquery';
 
 const Modal = ({ tour, onClose }) => {
+    const navigate = useNavigate();
     console.log(tour);
     return (
         <div className=" bg-gray-600 bg-opacity-50 flex justify-center items-center">
@@ -102,7 +103,10 @@ const Modal = ({ tour, onClose }) => {
                         </ul>
                     </div>
                     <div>
-                        <button type='submit' className="bg-red-600 text-white p-3 w-full">
+                        <button 
+                            onClick={() => navigate(`/pago/${tour.tour.id}`)}
+                            className="bg-red-600 text-white p-3 w-full hover:bg-red-700 transition-colors"
+                        >
                             Reservar
                         </button>
                     </div>
