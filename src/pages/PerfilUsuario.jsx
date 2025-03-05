@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import $ from "jquery";
 import { NavLink } from "react-router-dom";
+import { FaUser, FaEnvelope, FaPhone, FaEdit, FaCamera } from 'react-icons/fa';
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [message, setMessage] = useState("");
     const [avatar, setAvatar] = useState(null);
+    const [previewAvatar, setPreviewAvatar] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -15,7 +17,6 @@ const UserProfile = () => {
             return;
         }
 
-        // Obtener los datos del usuario
         $.ajax({
             url: `${import.meta.env.VITE_API_URL}/user`,
             type: "GET",
@@ -24,7 +25,6 @@ const UserProfile = () => {
                 Authorization: `Bearer ${token}`,
             },
             success: function (response) {
-                console.log(response);
                 setUser(response);
                 localStorage.setItem("id", JSON.stringify(response.id));
                 localStorage.setItem("user", JSON.stringify(response));
@@ -35,16 +35,23 @@ const UserProfile = () => {
             }
         });
     }, []);
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setAvatar(file);
+        
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setPreviewAvatar(reader.result);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const token = localStorage.getItem("token");
-
         const id = localStorage.getItem("id");
 
         if (!token || !avatar) {
@@ -65,12 +72,11 @@ const UserProfile = () => {
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response);
                 setMessage("Imagen subida correctamente.");
                 localStorage.setItem("user", JSON.stringify(response));
                 setUser((prevUser) => ({
                     ...prevUser,
-                    avatar: response.user.avatar, // Actualiza la imagen en el estado
+                    avatar: response.user.avatar,
                 }));
                 setTimeout(() => {
                     window.location.reload();
@@ -84,48 +90,92 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-200">
-            <div className="bg-white p-8 rounded-lg shadow-md w-96">
-                <h2 className="text-2xl font-bold text-center mb-6">Perfil del Usuario</h2>
-
-                {message && (
-                    <div className="p-3 mb-4 rounded bg-red-500 text-white">
-                        {message}
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+            <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md overflow-hidden">
+                {/* Profile Header */}
+                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-center relative">
+                    <div className="absolute top-4 right-4">
+                        <NavLink 
+                            to="/perfil/editar" 
+                            className="text-white hover:bg-white/20 p-2 rounded-full transition"
+                        >
+                            <FaEdit className="w-6 h-6" />
+                        </NavLink>
                     </div>
-                )}
+                    
+                    {/* Avatar Section */}
+                    <div className="relative mx-auto w-32 h-32 mb-4">
+                        <img 
+                            src={user?.avatar} 
+                            alt={user?.display || "User Avatar"} 
+                            className="w-full h-full rounded-full object-cover border-4 border-white shadow-lg"
+                        />
+                        <label 
+                            htmlFor="avatar-upload" 
+                            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-600"
+                        >
+                            <FaCamera className="w-5 h-5" />
+                        </label>
+                    </div>
+                    
+                    <h2 className="text-2xl font-bold text-white">{user?.display}</h2>
+                    <p className="text-white/80">{user?.email}</p>
+                </div>
 
-                {user ? (
-                    <div>
-                        <p className="mb-2"><strong>Usuario:</strong> {user.name}</p>
-                        <p className="mb-2"><strong>Email:</strong> {user.email}</p>
-                        <p className="mb-2"><strong>Nombres:</strong> {user.display}</p>
-                        <p className="mb-2"><strong>Teléfono:</strong> {user.telefono}</p>
-                        <img src={user.avatar} alt={user.display} />
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">Subir Avatar</label>
-                                <input
-                                    type="file"
-                                    id="avatar"
-                                    name="avatar"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                    className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+                {/* Profile Details */}
+                <div className="p-6 space-y-4">
+                    {message && (
+                        <div className={`p-3 rounded ${message.includes('Error') ? 'bg-red-500' : 'bg-green-500'} text-white`}>
+                            {message}
+                        </div>
+                    )}
+
+                    <div className="space-y-3">
+                        <div className="flex items-center space-x-3">
+                            <FaUser className="w-6 h-6 text-blue-500" />
+                            <span>{user?.name}</span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <FaEnvelope className="w-6 h-6 text-blue-500" />
+                            <span>{user?.email}</span>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                            <FaPhone className="w-6 h-6 text-blue-500" />
+                            <span>{user?.telefono || 'No phone number'}</span>
+                        </div>
+                    </div>
+
+                    {/* Avatar Upload Form */}
+                    <form onSubmit={handleSubmit} className="mt-6">
+                        <input
+                            type="file"
+                            id="avatar-upload"
+                            name="avatar"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
+                        
+                        {previewAvatar && (
+                            <div className="mb-4 flex justify-center">
+                                <img 
+                                    src={previewAvatar} 
+                                    alt="Preview" 
+                                    className="w-40 h-40 object-cover rounded-lg shadow-md"
                                 />
                             </div>
-
+                        )}
+                        
+                        {previewAvatar && (
                             <button
                                 type="submit"
-                                className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:opacity-90 transition"
                             >
                                 Subir Imagen
                             </button>
-                        </form>
-                        <NavLink to="/perfil/editar">Editar</NavLink>
-                    </div>
-                ) : (
-                    !message && <p>Cargando perfil...</p>
-                )}
+                        )}
+                    </form>
+                </div>
             </div>
         </div>
     );

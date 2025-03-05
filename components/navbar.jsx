@@ -5,6 +5,7 @@ import $ from "jquery";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const localUser = localStorage.getItem('user');
@@ -13,8 +14,23 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownOpen && !event.target.closest('.dropdown-container')) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [dropdownOpen]);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   const handleLogout = () => {
@@ -54,7 +70,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-4 ">
+          <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Inicio
             </NavLink>
@@ -70,8 +86,11 @@ const Navbar = () => {
           </div>
 
           {user ? (
-            <div className="relative">
-              <button className="flex items-center space-x-2 bg-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300">
+            <div className="relative dropdown-container">
+              <button 
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 bg-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300"
+              >
                 <img
                   src={user.avatar}
                   alt={user.name}
@@ -79,18 +98,20 @@ const Navbar = () => {
                 />
                 <span>{user.name}</span>
               </button>
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{user.display}</div>
-                <NavLink to="/perfil" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Ver Perfil
-                </NavLink>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                  <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{user.display}</div>
+                  <NavLink to="/perfil" className="block hover:bg-blue-400 hover:text-white px-4 py-2 text-sm text-gray-700">
+                    Ver Perfil
+                  </NavLink>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full hover:bg-red-400 hover:text-white transition text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex gap-10 text-center">
@@ -103,7 +124,6 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
