@@ -16,17 +16,17 @@ const Modal = ({ tour, onClose }) => {
 
                 {/* Información principal del Tour */}
                 <div className="space-y-6">
-                    <h2 className="text-3xl font-extrabold text-gray-800">{tour.nombre}</h2>
-                    <p className="text-lg text-gray-600 italic">{tour.destino}</p>
+                    <h2 className="text-3xl font-extrabold text-gray-800">{tour.tour.nombre}</h2>
+                    <p className="text-lg text-gray-600 italic">{tour.tour.destino}</p>
 
                     {/* Imagen de portada del tour */}
-                    <img src={tour.portada} alt={tour.nombre} className="w-full h-72 object-cover rounded-md" />
+                    <img src={tour.tour.portada} alt={tour.tour.nombre} className="w-full h-72 object-cover rounded-md" />
 
                     {/* Descripción del tour */}
                     <div className="text-gray-700">
                         <h3 className="font-semibold text-xl mb-2">Descripción:</h3>
                         <div className=""
-                            dangerouslySetInnerHTML={{ __html: tour.descripcion }}
+                            dangerouslySetInnerHTML={{ __html: tour.tour.descripcion }}
                         />
                     </div>
 
@@ -34,16 +34,26 @@ const Modal = ({ tour, onClose }) => {
                     <div className="flex space-x-8 mt-4">
                         <div>
                             <h3 className="font-semibold text-lg">Precio:</h3>
-                            <p className="text-xl text-red-600">${tour.precio}</p>
+                            <p className="text-xl text-red-600">${tour.tour.precio}</p>
                         </div>
                         <div>
                             <h3 className="font-semibold text-lg">Fecha de Inicio:</h3>
-                            <p className="text-gray-600">{tour.fecha_inicio}</p>
+                            <p className="text-gray-600">{tour.tour.fecha_inicio}</p>
                         </div>
                         <div>
                             <h3 className="font-semibold text-lg">Fecha de Fin:</h3>
-                            <p className="text-gray-600">{tour.fecha_fin}</p>
+                            <p className="text-gray-600">{tour.tour.fecha_fin}</p>
                         </div>
+                        <div>
+                            <h3 className="font-semibold text-lg">Cupos disponibles</h3>
+                            <p className="text-gray-600">{tour.tour.cupos_disponibles}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-1">
+                        {tour.tour.fotos.map((foto) =>(
+                                <img src={foto} className="w-50" />
+                        ))}
                     </div>
 
                     {/* Actividades relacionadas */}
@@ -91,6 +101,11 @@ const Modal = ({ tour, onClose }) => {
                             ))}
                         </ul>
                     </div>
+                    <div>
+                        <button type='submit' className="bg-red-600 text-white p-3 w-full">
+                            Reservar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,11 +139,15 @@ const Tours = () => {
 
             // Si existe idtour, hace la consulta para obtener los detalles de ese tour
             if (idtour) {
+                console.log(idtour)
                 $.ajax({
                     url: `${import.meta.env.VITE_API_URL}/pages/tours/${idtour}`,
                     method: 'GET',
                     dataType: 'json',
                     success: (response) => {
+
+                        console.log("Larespuestaes: ")
+                        console.log(response)
                         setSelectedTour(response);
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
@@ -202,5 +221,6 @@ const Tours = () => {
         </div>
     );
 };
+
 
 export default Tours;

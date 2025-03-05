@@ -79,7 +79,7 @@ const Registro = () => {
             )}
             <form onSubmit={handleSubmit} className="text-white">
                 <div className="mb-4">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Usuario</label>
+                    <label htmlFor="name" className="block text-sm font-medium ">Usuario</label>
                     <input
                         type="text"
                         id="name"
@@ -93,7 +93,7 @@ const Registro = () => {
                 </div>
 
                 <div className="mb-4 text-white">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                    <label htmlFor="email" className="block text-sm font-medium ">Correo Electrónico</label>
                     <input
                         type="email"
                         id="email"
@@ -107,7 +107,7 @@ const Registro = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <label htmlFor="password" className="block text-sm font-medium ">Contraseña</label>
                     <input
                         type="password"
                         id="password"
@@ -121,7 +121,7 @@ const Registro = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre</label>
+                    <label htmlFor="nombre" className="block text-sm font-medium ">Nombre</label>
                     <input
                         type="text"
                         id="nombre"
@@ -135,7 +135,7 @@ const Registro = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="apellido" className="block text-sm font-medium text-gray-700">Apellido</label>
+                    <label htmlFor="apellido" className="block text-sm font-medium ">Apellido</label>
                     <input
                         type="text"
                         id="apellido"
@@ -149,7 +149,7 @@ const Registro = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label htmlFor="telefono" className="block text-sm font-medium text-gray-700">Teléfono</label>
+                    <label htmlFor="telefono" className="block text-sm font-medium ">Teléfono</label>
                     <input
                         type="text"
                         id="telefono"
