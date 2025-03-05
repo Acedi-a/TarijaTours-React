@@ -104,7 +104,7 @@ const Modal = ({ tour, onClose }) => {
                     </div>
                     <div>
                         <button 
-                            onClick={() => navigate(`/pago/${tour.tour.id}`)}
+                            onClick={() => navigate(`/pago/${tour.actividades[0].tour_actividad.id}`)}
                             className="bg-red-600 text-white p-3 w-full hover:bg-red-700 transition-colors"
                         >
                             Reservar

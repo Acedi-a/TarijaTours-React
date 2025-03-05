@@ -6,15 +6,79 @@ import { useParams, useNavigate } from 'react-router-dom';
 import TarjetaCredito from '../../components/TarjetaCredito';
 import $ from 'jquery';
 
+const realizarReserva = (id_tour_actividad) => {
+    const token = localStorage.getItem('token'); 
+
+    if (!token) {
+        alert("No tienes autorización para hacer una reserva.");
+        return;
+    }
+
+    const data = {
+        id_tour_actividades: [
+            id_tour_actividad
+        ]
+    };
+
+    $.ajax({
+        url: `${import.meta.env.VITE_API_URL}/reservas`,
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data),
+        success: (response) => {
+            alert('Reserva realizada con éxito');
+        },
+        error: (jqXHR) => {
+            alert(`Error al reservar: ${jqXHR.responseText}`);
+        }
+    });
+};
+
+const RealizarPago = (tarjetaSeleccionada, idTour) => {
+    const token = localStorage.getItem('token'); 
+
+    const data = {
+        tarjeta: tarjetaSeleccionada,
+        id_reservas: [
+            idTour
+        ]
+    }
+
+    $.ajax({
+        url: `${import.meta.env.VITE_API_URL}/pagar/reservas`,
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data),
+        success: (response) => {
+            alert('Pago realizado con éxito');
+        },
+        error: (jqXHR) => {
+            alert(`Error al realizar pago: ${jqXHR.responseText}`);
+        }
+        
+
+    })
+}
+
+
 const FormularioPago = () => {
+    
+    const [selectedTarjeta, setSelectedTarjeta] = useState('');
     const { idtour } = useParams();
+
+
     if (!idtour) {
         navigate('/');
         return null;
     }
     const navigate = useNavigate();
     const [tarjetas, setTarjetas] = useState([]);
-    const [selectedTarjeta, setSelectedTarjeta] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -48,23 +112,9 @@ const FormularioPago = () => {
             return;
         }
 
-        // Realizar el pago
-        $.ajax({
-            url: `${import.meta.env.VITE_API_URL}/api/card/tarjetas`,
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-            data: {
-                tarjeta: selectedTarjeta,
-            },
-            success: (response) => {
-                navigate('/perfil');
-            },
-            error: (jqXHR) => {
-                setError('Error al procesar el pago');
-            }
-        });
+
+        realizarReserva(idtour);
+        RealizarPago(selectedTarjeta,idtour);
     };
 
     if (loading) {
