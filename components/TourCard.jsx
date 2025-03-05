@@ -273,7 +273,7 @@ const TourCard = ({ tour, index }) => {
                             whileTap={{ scale: 0.95 }}
                             className="w-full bg-white text-red-700 px-6 py-2 rounded-full font-semibold hover:bg-red-700 hover:text-white transition-all duration-300"
                         >
-                            View Details
+                            Mas detalles
                         </motion.button>
                     </Link>
                 </Content>

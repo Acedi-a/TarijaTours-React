@@ -20,9 +20,9 @@ const TarjetaForm = ({ onDatosChange, initialData = {} }) => {
 
     const logotipos = {
         visa: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1200px-Visa_Inc._logo.svg.png",
-        mastercard: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Mastercard-logo.svg/1200px-Mastercard-logo.svg.png",
+        mastercard: "https://cdn.freebiesupply.com/images/thumbs/2x/mastercard-logo.png",
         amex: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/American_Express_logo.svg/1200px-American_Express_logo.svg.png",
-        discover: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Discover_logo.svg/1200px-Discover_logo.svg.png"
+        discover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxVlKiObkc78TE6qLuV9ee1B2eIVAUCDDJ6g&s"
     };
 
     const Tarjeta = () => {

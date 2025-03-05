@@ -34,26 +34,22 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Obtener el token de localStorage
     const token = localStorage.getItem('token');
 
-    // Realizar la solicitud de logout usando jQuery
     $.ajax({
       url: `${import.meta.env.VITE_API_URL}/logout`,
       type: "POST",
       contentType: "application/json",
       headers: {
-        Authorization: `Bearer ${token}`, // Enviar el token en los headers
+        Authorization: `Bearer ${token}`, 
       },
       success: function (response) {
-        // Si la respuesta es exitosa, limpiar el localStorage y redirigir al login
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        setUser(null); // Si usas un estado de usuario, como en React
+        setUser(null); 
         window.location.href = '/';
       },
       error: function (xhr, status, error) {
-        // Manejo de errores, por ejemplo, si el token es inválido
         console.error("Error al cerrar sesión:", error);
       }
     });
@@ -69,7 +65,7 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* Desktop menu */}
+          {/* Escritorio */}
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Inicio
@@ -80,7 +76,7 @@ const Navbar = () => {
             <NavLink to="/about" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Nosotros
             </NavLink>
-            <NavLink to="/contact" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            <NavLink to="/404" className="text-gray-700 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
               Contacto
             </NavLink>
           </div>
@@ -153,7 +149,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Celuco menu */}
       <div className={`${isOpen ? 'block' : 'hidden'} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <NavLink to="/" className="text-gray-700 hover:text-red-700 block px-3 py-2 rounded-md text-base font-medium">

@@ -1,120 +1,125 @@
 import { useEffect, useState } from 'react';
 import {  useNavigate, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import TourCard from './TourCard.jsx';
 import $ from 'jquery';
+import { IoClose, IoLocationSharp, IoCalendarOutline, IoPeopleOutline, IoCompassOutline } from 'react-icons/io5';
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const Modal = ({ tour, onClose }) => {
     const navigate = useNavigate();
-    console.log(tour);
+    const [currentImage, setCurrentImage] = useState(tour.tour.portada);
+    
+    const allPhotos = [tour.tour.portada, ...tour.tour.fotos];
+
     return (
-        <div className=" bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full overflow-y-auto">
-                {/* Botón de cierre */}
-                <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                    X
-                </button>
-
-                {/* Información principal del Tour */}
-                <div className="space-y-6">
-                    <h2 className="text-3xl font-extrabold text-gray-800">{tour.tour.nombre}</h2>
-                    <p className="text-lg text-gray-600 italic">{tour.tour.destino}</p>
-
-                    {/* Imagen de portada del tour */}
-                    <img src={tour.tour.portada} alt={tour.tour.nombre} className="w-full h-72 object-cover rounded-md" />
-
-                    {/* Descripción del tour */}
-                    <div className="text-gray-700">
-                        <h3 className="font-semibold text-xl mb-2">Descripción:</h3>
-                        <div className=""
-                            dangerouslySetInnerHTML={{ __html: tour.tour.descripcion }}
+        <AnimatePresence>
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            >
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-y-auto grid grid-cols-1 md:grid-cols-2"
+                >
+                    {/* Lado Izquierdo: Imagen Principal */}
+                    <div className="relative">
+                        <img 
+                            src={currentImage} 
+                            alt={tour.tour.nombre} 
+                            className="w-full h-full object-cover rounded-l-2xl"
                         />
-                    </div>
-
-                    {/* Información adicional */}
-                    <div className="flex space-x-8 mt-4">
-                        <div>
-                            <h3 className="font-semibold text-lg">Precio:</h3>
-                            <p className="text-xl text-red-600">${tour.tour.precio}</p>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-lg">Fecha de Inicio:</h3>
-                            <p className="text-gray-600">{tour.tour.fecha_inicio}</p>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-lg">Fecha de Fin:</h3>
-                            <p className="text-gray-600">{tour.tour.fecha_fin}</p>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-lg">Cupos disponibles</h3>
-                            <p className="text-gray-600">{tour.tour.cupos_disponibles}</p>
+                        
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 text-white">
+                            <h2 className="text-3xl font-bold mb-2">{tour.tour.nombre}</h2>
+                            <div className="flex items-center">
+                                <IoLocationSharp className="mr-2 w-5 h-5" />
+                                <p className="text-lg">{tour.tour.destino}</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex gap-1">
-                        {tour.tour.fotos.map((foto) =>(
-                                <img src={foto} className="w-50" />
-                        ))}
-                    </div>
-
-                    {/* Actividades relacionadas */}
-                    <div>
-                        <h3 className="text-xl font-semibold mt-6">Actividades:</h3>
-                        <ul className="space-y-4 mt-4">
-                            {tour.actividades.map((actividad, index) => (
-                                <li key={actividad.actividad.id} className="border-t pt-4">
-                                    <h4 className="text-lg font-semibold text-gray-800">{actividad.actividad.nombre}</h4>
-                                    <div className="text-gray-600"
-                                        dangerouslySetInnerHTML={{ __html: actividad.actividad.descripcion }}
-                                    />
-                                    <div className="mt-2">
-                                        <img
-                                            src={actividad.actividad.fotos[0]}
-                                            alt={actividad.actividad.nombre}
-                                            className="w-full h-48 object-cover rounded-md mt-2"
-                                        />
-                                    </div>
-                                    <div className="flex space-x-8 mt-4">
-                                        <div>
-                                            <h5 className="font-semibold">Duración:</h5>
-                                            <p>{actividad.actividad.duracion} minutos</p>
-                                        </div>
-                                        <div>
-                                            <h5 className="font-semibold">Lugar:</h5>
-                                            <p>{actividad.tour_actividad.lugar}</p>
-                                        </div>
-                                        <div>
-                                            <h5 className="font-semibold">Precio Total:</h5>
-                                            <p className="text-red-600">${actividad.tour_actividad.precio_total}</p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-8">
-                                        <h3 className="text-xl font-semibold">Guía:</h3>
-                                        <div className="flex items-center mt-4">
-                                            <img src={actividad.guia.avatar} alt="Guía" className="w-16 h-16 rounded-full mr-4" />
-                                            <div>
-                                                <h4 className="font-semibold text-lg">{actividad.guia.display}</h4>
-                                                <p className="text-gray-600">Guía turístico de confianza</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div>
+                    {/* Lado Derecho: Información Detallada */}
+                    <div className="p-8 overflow-y-auto space-y-6">
+                        {/* Botón de Cierre */}
                         <button 
-                            onClick={() => navigate(`/pago/${tour.actividades[0].tour_actividad.id}`)}
-                            className="bg-red-600 text-white p-3 w-full hover:bg-red-700 transition-colors"
+                            onClick={onClose} 
+                            className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors"
                         >
-                            Reservar
+                            <IoClose className="w-8 h-8" />
                         </button>
+
+                        {/* Estadísticas Rápidas */}
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="bg-gray-100 p-4 rounded-lg flex items-center">
+                                <IoCalendarOutline className="mr-2 text-red-600" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Fecha de Inicio</p>
+                                    <p className="font-semibold">{tour.tour.fecha_inicio}</p>
+                                </div>
+                            </div>
+                            <div className="bg-gray-100 p-4 rounded-lg flex items-center">
+                                <IoPeopleOutline className="mr-2 text-red-600" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Cupos Disponibles</p>
+                                    <p className="font-semibold">{tour.tour.cupos_disponibles}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Descripción */}
+                        <div>
+                            <h3 className="text-xl font-bold mb-3 flex items-center">
+                                <IoCompassOutline className="mr-2 text-red-600" /> 
+                                Descripción del Tour
+                            </h3>
+                            <div 
+                                className="text-gray-700 leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: tour.tour.descripcion }}
+                            />
+                        </div>
+
+                        {/* Sección de Precio */}
+                        <div className="bg-red-50 p-4 rounded-lg">
+                            <div className="flex justify-between items-center mb-4">
+                                <div>
+                                    <p className="text-sm text-gray-600">Precio Total</p>
+                                    <p className="text-2xl font-bold text-red-600">${tour.tour.precio}</p>
+                                </div>
+                                <button 
+                                    onClick={() => navigate(`/pago/${tour.actividades[0].tour_actividad.id}`)}
+                                    className="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition-colors flex items-center"
+                                >
+                                    Reservar Ahora <IoCompassOutline className="ml-2" />
+                                </button>
+                            </div>
+
+                            {/* Galería de Fotos */}
+                            <div className="flex space-x-2 overflow-x-auto mt-4">
+                                {allPhotos.map((foto, index) => (
+                                    <img 
+                                        key={index} 
+                                        src={foto} 
+                                        alt={`Foto ${index + 1}`}
+                                        className={`w-20 h-20 object-cover rounded-md cursor-pointer 
+                                            ${currentImage === foto ? 'border-2 border-red-500' : 'opacity-70 hover:opacity-100'}`}
+                                        onClick={() => setCurrentImage(foto)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>
     );
 };
+
 
 const Tours = () => {
     const { idtour } = useParams();
@@ -202,7 +207,7 @@ const Tours = () => {
                     transition={{ duration: 0.5 }}
                     className="text-4xl md:text-5xl font-extrabold text-center mb-4 text-red-700"
                 >
-                    Discover Amazing Tours
+                    Tours disponibles
                 </motion.h1>
                 <motion.p
                     initial={{ opacity: 0 }}
@@ -210,8 +215,7 @@ const Tours = () => {
                     transition={{ delay: 0.2, duration: 0.5 }}
                     className="text-center text-gray-600 max-w-2xl mx-auto mb-12"
                 >
-                    Explore our handpicked selection of unforgettable adventures and create memories that will last a lifetime.
-                </motion.p>
+Desde grandes paisajes hasta experiencias inolvidables, descubre la magia de sus viñedos, sus pintorescas colinas y la calidez de su gente. Déjate envolver por el encanto de la ciudad y su rica cultura mientras creas recuerdos únicos en cada rincón                </motion.p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {tours.map((tour, index) => (

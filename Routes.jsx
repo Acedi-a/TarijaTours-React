@@ -8,6 +8,8 @@ import Registro from "./src/pages/Registro.jsx";
 import PerfilEditar from "./src/pages/PerfilEditar.jsx";
 import UserProfile from "./src/pages/PerfilUsuario.jsx";
 import FormularioPago from "./src/pages/FormularioPago.jsx";
+import About from "./src/pages/About.jsx";
+import Progresando from "./src/pages/Progresando.jsx";
 
 const Rutas = () => {
     return(
@@ -22,6 +24,8 @@ const Rutas = () => {
                 <Route path="/perfil" element={<UserProfile/>} />
                 <Route path="/perfil/editar" element={<PerfilEditar/>} />
                 <Route path="/pago/:idtour" element={<FormularioPago/>}/>
+                <Route path="/about" element={<About/>} />
+                <Route path="/404" element={<Progresando/>} />
             </Routes>
             <Footer/>
         </BrowserRouter>
