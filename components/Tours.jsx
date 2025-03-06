@@ -27,7 +27,6 @@ const Modal = ({ tour, onClose }) => {
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     className="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-y-auto grid grid-cols-1 md:grid-cols-2"
                 >
-                    {/* Lado Izquierdo: Imagen Principal */}
                     <div className="relative">
                         <img 
                             src={currentImage} 
@@ -44,9 +43,7 @@ const Modal = ({ tour, onClose }) => {
                         </div>
                     </div>
 
-                    {/* Lado Derecho: Información Detallada */}
                     <div className="p-8 overflow-y-auto space-y-6">
-                        {/* Botón de Cierre */}
                         <button 
                             onClick={onClose} 
                             className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors"
@@ -54,7 +51,6 @@ const Modal = ({ tour, onClose }) => {
                             <IoClose className="w-8 h-8" />
                         </button>
 
-                        {/* Estadísticas Rápidas */}
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className="bg-gray-100 p-4 rounded-lg flex items-center">
                                 <IoCalendarOutline className="mr-2 text-red-600" />
@@ -72,7 +68,6 @@ const Modal = ({ tour, onClose }) => {
                             </div>
                         </div>
 
-                        {/* Descripción */}
                         <div>
                             <h3 className="text-xl font-bold mb-3 flex items-center">
                                 <IoCompassOutline className="mr-2 text-red-600" /> 
@@ -84,7 +79,6 @@ const Modal = ({ tour, onClose }) => {
                             />
                         </div>
 
-                        {/* Sección de Precio */}
                         <div className="bg-red-50 p-4 rounded-lg">
                             <div className="flex justify-between items-center mb-4">
                                 <div>
@@ -99,7 +93,6 @@ const Modal = ({ tour, onClose }) => {
                                 </button>
                             </div>
 
-                            {/* Galería de Fotos */}
                             <div className="flex space-x-2 overflow-x-auto mt-4">
                                 {allPhotos.map((foto, index) => (
                                     <img 
@@ -131,13 +124,12 @@ const Tours = () => {
 
     useEffect(() => {
         const fetchTours = () => {
-            // Primero obtén todos los tours
             $.ajax({
                 url: `${import.meta.env.VITE_API_URL}/pages/tours`,
                 method: 'GET',
                 dataType: 'json',
                 success: (response) => {
-                    setTours(response.tours.data);
+                    setTours(response.tours);
                     setLoading(false);
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
@@ -146,7 +138,6 @@ const Tours = () => {
                 }
             });
 
-            // Si existe idtour, hace la consulta para obtener los detalles de ese tour
             if (idtour) {
                 console.log(idtour)
                 $.ajax({

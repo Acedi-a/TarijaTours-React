@@ -92,7 +92,6 @@ const UserProfile = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
             <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md overflow-hidden">
-                {/* Profile Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-center relative">
                     <div className="absolute top-4 right-4">
                         <NavLink 
@@ -103,7 +102,6 @@ const UserProfile = () => {
                         </NavLink>
                     </div>
                     
-                    {/* Avatar Section */}
                     <div className="relative mx-auto w-32 h-32 mb-4">
                         <img 
                             src={user?.avatar} 

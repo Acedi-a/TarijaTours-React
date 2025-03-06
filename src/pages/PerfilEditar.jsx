@@ -31,7 +31,6 @@ const PerfilEditar = () => {
             },
             success: function (response) {
                 console.log(response);
-                // Pre-poblar el formulario con los datos del usuario
                 setFormData({
                     name: response.name,
                     email: response.email,
@@ -58,7 +57,6 @@ const PerfilEditar = () => {
     const handleSubmit = (e) => {
         const id = localStorage.getItem("id");
         e.preventDefault();
-        // Enviar solicitud POST para actualizar los datos del usuario
         $.ajax({
             url: `${import.meta.env.VITE_API_URL}/user/edit/${id}`,
             type: "PUT",
@@ -72,7 +70,6 @@ const PerfilEditar = () => {
                     console.log(response);
                     setStatus(200);
                     setMessage("Perfil actualizado con éxito.");
-                    // Redirigir después de un pequeño delay
                     setTimeout(() => window.location.href = "/perfil", 1500);
                 },
                 422: function (response) {

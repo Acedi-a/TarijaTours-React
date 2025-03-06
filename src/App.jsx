@@ -5,10 +5,7 @@ import {
   FaGlobe, 
   FaClock, 
   FaMoneyBillWave, 
-  FaMapMarkedAlt, 
-  FaUsers, 
-  FaSmile, 
-  FaHeadset 
+  
 } from 'react-icons/fa';
 import './App.css';
 
@@ -19,7 +16,6 @@ function App() {
     setIsVisible(true);
   }, []);
 
-  // Reusable feature card component
   const FeatureCard = ({ icon: Icon, title, description, delay }) => (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -35,7 +31,6 @@ function App() {
     </motion.div>
   );
 
-  // Reusable statistic card
   const StatCard = ({ number, label }) => (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
       <h4 className="text-4xl font-bold text-red-700">{number}</h4>
@@ -46,7 +41,6 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
       <div className="container mx-auto px-4 py-16">
-        {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
@@ -61,7 +55,6 @@ function App() {
           </p>
         </motion.div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <FeatureCard 
             icon={FaGlobe}
@@ -83,7 +76,6 @@ function App() {
           />
         </div>
 
-        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isVisible ? 1 : 0, y: 0 }}
@@ -100,7 +92,6 @@ function App() {
           </Link>
         </motion.div>
 
-        {/* Statistics Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isVisible ? 1 : 0, y: 0 }}

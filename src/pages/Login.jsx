@@ -10,13 +10,11 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault();
 
-        // Aquí puedes agregar la lógica de validación
         if (!email || !password) {
             setMessage("Por favor, ingresa todos los campos.");
             return;
         }
 
-        // Simulando la consulta con jQuery
         $.ajax({
             url: `${import.meta.env.VITE_API_URL}/login`,
             type: "POST",

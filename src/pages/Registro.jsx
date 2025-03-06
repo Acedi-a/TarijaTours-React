@@ -37,7 +37,6 @@ const Registro = () => {
                     setMessage(response.message);
                     localStorage.setItem("token", response.token);
                     localStorage.setItem("user", JSON.stringify(response.user));
-                    // Redirigir después de un pequeño delay
                     setTimeout(() => window.location.href = "/perfil", 1500);
                 },
                 422: function (response) {
